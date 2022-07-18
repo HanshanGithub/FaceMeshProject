@@ -32,6 +32,8 @@ class FaceMeshDetector:
                     # print(lm)
                     ih, iw, ic = img.shape
                     x, y = int(lm.x * iw), int(lm.y * ih)
+                    # cv2.putText(img, str(id), (x, y), cv2.FONT_HERSHEY_PLAIN,
+                    #             0.1, (0, 255, 0), 1)
                     # print(id, x, y)
                     face.append([x,y])
                 faces.append(face)
@@ -55,21 +57,21 @@ class FaceMeshDetector:
 def main():
     # cap = cv2.VideoCapture(0)
     cap = cv2.VideoCapture("Videos/22.mp4")
-    facemesh = FaceMeshDetector()
+    facemesh = FaceMeshDetector(maxFaces=3)
     pTime = 0
     while True:
         suceess, img = cap.read()
-        img, faces = facemesh.findFaceMesh(img)
+        # img, faces = facemesh.findFaceMesh(img,False)
+        img, faces = facemesh.findFaceMesh(img,True)
         if len(faces) != 0:
-            print(len(faces))
+            print(faces[0])
         # facemesh.drawPoints(img)
         cTime = time.time()
         fps = 1/(cTime-pTime)
         pTime = cTime
-        cv2.putText(img, f'FPS:{int(fps)}', (20, 20), cv2.FONT_HERSHEY_PLAIN,
-                    1, (0,255,0),1)
+
         cv2.imshow("Image", img)
-        cv2.waitKey(1)
+        cv2.waitKey(10)
 
 
 if __name__ == "__main__":
