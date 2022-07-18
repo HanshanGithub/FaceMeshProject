@@ -11,8 +11,6 @@ mpFaceMesh = mp.solutions.face_mesh
 faceMesh = mpFaceMesh.FaceMesh(max_num_faces=2) # max_num_faces=1 rgb
 drawSpec= mpDraw.DrawingSpec((255,0,0),thickness=1,circle_radius=2)
 
-
-
 while True:
     suceess, img = cap.read()
     imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)

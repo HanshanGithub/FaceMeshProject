@@ -11,20 +11,21 @@ draw = mp.solutions.drawing_utils
 while True:
 
 	_, frm = cap.read()
-	print(frm.shape)
-	break
+	# print(frm.shape)
+	# break
 	rgb = cv2.cvtColor(frm, cv2.COLOR_BGR2RGB)
 
 	op = face.process(rgb)
 	if op.multi_face_landmarks:
 		for i in op.multi_face_landmarks:
-			print(i.landmark[0].y*480)
+			# print(i.landmark[0].y*480)
 			draw.draw_landmarks(frm, i, facmesh.FACEMESH_CONTOURS, landmark_drawing_spec=draw.DrawingSpec(color=(0, 255, 255), circle_radius=1))
 
 
 	cv2.imshow("window", frm)
 
-	if cv2.waitKey(1) == 27:
-		cap.release()
-		cv2.destroyAllWindows()
-		break
+	# if cv2.waitKey(1) == 27:
+	# 	cap.release()
+	# 	cv2.destroyAllWindows()
+	# 	break
+	cv2.waitKey(1)

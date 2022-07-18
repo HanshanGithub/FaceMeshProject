@@ -13,34 +13,37 @@ class FaceMesh:
 
 
 
-    results = faceMesh.process(imgRGB)
-    if results.multi_face_landmarks:
-        for faceLms in results.multi_face_landmarks:
-            mpDraw.draw_landmarks(img, faceLms, mpFaceMesh.FACEMESH_CONTOURS,
-                                  drawSpec,drawSpec) # FACE_CONNECTIONS
-            for id, lm in enumerate(faceLms.landmark):
-                # print(lm)
-                ih, iw, ic = img.shape
-                x, y = int(lm.x*iw), int(lm.y*ih)
-                print(id, x, y)
 
-
-    cTime = time.time()
-    fps = 1/(cTime-pTime)
-    pTime = cTime
-    cv2.putText(img, f'FPS:{int(fps)}', (20, 70), cv2.FONT_HERSHEY_PLAIN,
-                3, (0,255,0),3)
-    cv2.imshow("Image", img)
-    cv2.waitKey(10)
+    def drawPoints(self,img,draw=True):
+        imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        self.results = self.faceMesh.process(imgRGB)
+        if self.results.multi_face_landmarks:
+            for faceLms in self.results.multi_face_landmarks:
+                if draw:
+                    self.mpDraw.draw_landmarks(img, faceLms, self.mpFaceMesh.FACEMESH_CONTOURS,
+                                          self.drawSpec,self.drawSpec) # FACE_CONNECTIONS
+                for id, lm in enumerate(faceLms.landmark):
+                    # print(lm)
+                    ih, iw, ic = img.shape
+                    x, y = int(lm.x*iw), int(lm.y*ih)
+                    print(id, x, y)
 
 
 def main():
     cap = cv2.VideoCapture(0)
+    facemesh = FaceMesh()
     pTime = 0
     while True:
         suceess, img = cap.read()
-        imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-
+        # imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        facemesh.drawPoints(img)
+        cTime = time.time()
+        fps = 1/(cTime-pTime)
+        pTime = cTime
+        cv2.putText(img, f'FPS:{int(fps)}', (20, 20), cv2.FONT_HERSHEY_PLAIN,
+                    1, (0,255,0),1)
+        cv2.imshow("Image", img)
+        cv2.waitKey(1)
 
 
 if __name__ == "__main__":
